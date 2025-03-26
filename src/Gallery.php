@@ -33,7 +33,7 @@ class Gallery extends Plugin
     public function init(): void
     {
         parent::init();
-
+        Craft::setAlias('@digitalejungle/crafteasygallery', __DIR__);
         $this->attachEventHandlers();
 
         // Any code that creates an element query or loads Twig should be deferred until

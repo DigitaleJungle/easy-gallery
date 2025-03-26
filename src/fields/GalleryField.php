@@ -24,6 +24,13 @@ class GalleryField extends Field
         return Craft::t('app', 'Gallery Folder');
     }
 
+
+    public static function icon(): string
+    {
+        return '@digitalejungle/crafteasygallery/assets/icon.svg';
+    }
+
+
     protected function defineRules(): array
     {
         $rules = parent::defineRules();
@@ -68,7 +75,7 @@ class GalleryField extends Field
         }
 
         // Build an initial placeholder option.
-        $optionsHtml = '<option disabled selected>-- Kies een map --</option>';
+        $optionsHtml = '<option disabled selected>-- Choose a folder --</option>';
 
         // For each selected volume, get its root folder & render options.
         foreach ($this->volumeIds as $volumeId) {
