@@ -27,7 +27,7 @@ class GalleryField extends Field
 
     public static function icon(): string
     {
-        return '@digitalejungle/crafteasygallery/assets/icon.svg';
+        return '@digitalejungle/crafteasygallery/field-icon.svg';
     }
 
 
