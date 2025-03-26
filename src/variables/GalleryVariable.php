@@ -3,20 +3,42 @@
 namespace digitalejungle\crafteasygallery\variables;
 
 use digitalejungle\crafteasygallery\Gallery;
+use digitalejungle\crafteasygallery\models\GalleryData;
 
+/**
+ * Access these methods via craft.easyGallery.* in Twig.
+ */
 class GalleryVariable
 {
-    /* Example usage in Twig: {{ craft.easyGallery.getGallery(folderId) }} */
-    public function getGallery(int $folderId)
+    /**
+     * Returns a GalleryData object for a given folder ID.
+     */
+    public function getGallery(int|string $folderId): ?GalleryData
     {
-        // Access the plugin service
         return Gallery::getInstance()->galleryService->getGallery($folderId);
     }
 
     /**
-     * You can add more methods here if you want, for example:
-     * craft.easyGallery.getSubfolders(folderId)
-     * craft.easyGallery.getAssets(folderId)
-     * etc.
+     * Returns child folders for a given folder ID, each as a GalleryData object.
      */
+    public function getFolders(int|string $folderId): array
+    {
+        return Gallery::getInstance()->galleryService->getFolders($folderId);
+    }
+
+    /**
+     * Returns assets for a given folder ID, optionally filtered by kind(s).
+     */
+    public function getAssets(int|string $folderId, string|array|null $assetTypes = null): array
+    {
+        return Gallery::getInstance()->galleryService->getAssets($folderId, $assetTypes);
+    }
+
+    /**
+     * Returns all objects (folders + assets) in a folder.
+     */
+    public function getObjects(int|string $folderId, string|array|null $assetTypes = null): array
+    {
+        return Gallery::getInstance()->galleryService->getObjects($folderId, $assetTypes);
+    }
 }

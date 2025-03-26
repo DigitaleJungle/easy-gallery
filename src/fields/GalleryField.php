@@ -71,7 +71,7 @@ class GalleryField extends Field
     {
         // If the value is already normalized, extract the folder ID for comparisons.
         if ($value instanceof GalleryData) {
-            $value = $value->id;
+            $value = $value->getId();
         }
 
         // Build an initial placeholder option.
