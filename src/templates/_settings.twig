@@ -3,4 +3,17 @@
 
 {% import '_includes/forms.twig' as forms %}
 
-{# ... #}
+<div class="field first">
+    <div class="heading">
+        <label for="folderTemplate">{{ 'Folder render template'|t('easy-gallery') }}</label>
+        <div class="instructions"><p>{{ 'You can set a default template to render the folders'|t('splashing-images') }}</p>
+        </div>
+    </div>
+    <div class="input ltr">
+        <div class="flex">
+            <input type="text" name="folderTemplate" id="folderTemplate" class="text ltr fullwidth"
+                   value="{{ settings['folderTemplate'] }}"
+                   placeholder="partials/folder.twig">
+        </div>
+    </div>
+</div>

@@ -150,7 +150,7 @@ class GalleryField extends Field
     public function serializeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         if ($value instanceof GalleryData) {
-            return $value->id;
+            return $value->getId();
         }
         return $value;
     }

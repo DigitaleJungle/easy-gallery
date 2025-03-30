@@ -5,20 +5,29 @@ namespace digitalejungle\crafteasygallery;
 use Craft;
 use craft\base\Model;
 use craft\base\Plugin;
-use craft\services\Fields;
 use craft\events\RegisterComponentTypesEvent;
+use craft\services\Fields;
 use craft\web\twig\variables\CraftVariable;
+use digitalejungle\crafteasygallery\fields\GalleryField;
 use digitalejungle\crafteasygallery\models\Settings;
 use digitalejungle\crafteasygallery\services\GalleryService;
 use digitalejungle\crafteasygallery\variables\GalleryVariable;
 use yii\base\Event;
 
+/**
+ * Easy Gallery plugin
+ *
+ * @method static Gallery getInstance()
+ * @method Settings getSettings()
+ */
 class Gallery extends Plugin
 {
     public string $schemaVersion = '1.0.0';
     public bool $hasCpSettings = true;
 
-    /* Registration of Sercive */
+    /**
+     * Register components/services for this plugin.
+     */
     public static function config(): array
     {
         return [
@@ -30,60 +39,75 @@ class Gallery extends Plugin
         ];
     }
 
-    /* CP nav item. */
+    /**
+     * Optionally customize the CP nav item.
+     */
     public function getCpNavItem(): ?array
     {
         $nav = parent::getCpNavItem();
-        // You can define a control panel section here if needed.
+        // If you have a CP section, define it here if needed
         return $nav;
     }
 
-    /* Plugin initialization. */
+    /**
+     * Plugin initialization.
+     */
     public function init(): void
     {
         parent::init();
+
+        \Craft::info('init() - Easy Gallery is initializing', __METHOD__);
+
         $this->attachEventHandlers();
 
-        // Defer registration of custom field types until after Craft is fully initialized
+        // Defer registration until after Craft is fully initialized
         Craft::$app->onInit(function () {
+            // Register a custom field type
             Craft::$app->fields->on(
                 Fields::EVENT_REGISTER_FIELD_TYPES,
                 function (RegisterComponentTypesEvent $event) {
-                    // Register the GalleryField as a custom field type
-                    $event->types[] = \digitalejungle\crafteasygallery\fields\GalleryField::class;
+                    $event->types[] = GalleryField::class;
                 }
             );
         });
 
+        // Register "easyGallery" as a global variable in Twig
         Event::on(
             CraftVariable::class,
             CraftVariable::EVENT_INIT,
-            function(Event $event) {
+            function (Event $event) {
+                /** @var CraftVariable $variable */
                 $variable = $event->sender;
                 $variable->set('easyGallery', GalleryVariable::class);
             }
         );
     }
 
-    /* Create a settings model for plugin-wide configuration. */
-    protected function createSettingsModel(): ?Model
-    {
-        return Craft::createObject(Settings::class);
-    }
-
-    /* Render the settings template for the plugin’s CP settings page. */
-    protected function settingsHtml(): ?string
-    {
-        return Craft::$app->view->renderTemplate('easy-gallery/_settings.twig', [
-            'plugin' => $this,
-            'settings' => $this->getSettings(),
-        ]);
-    }
-
-    /* Attach any event handlers your plugin needs. */
     private function attachEventHandlers(): void
     {
-        // Register event handlers here.
-        // (see https://craftcms.com/docs/5.x/extend/events.html to get started)
+        // Example: register your plugin’s own event handlers here if needed.
+    }
+
+        /**
+     * Creates and returns the model used to store the plugin’s settings.
+     **/
+    protected function createSettingsModel(): Model
+    {
+        return new Settings();
+    }
+
+    protected function settingsHtml(): string
+    {
+        $volumes = Craft::$app->getVolumes();
+        foreach ($volumes->getAllVolumes() as $source) {
+            $destinationOptions[] = array('label' => $source->name, 'value' => $source->id);
+        }
+        return Craft::$app->view->renderTemplate(
+            'easy-gallery/_settings',
+            [
+                'settings' => $this->getSettings(),
+                'volumes' => $destinationOptions ?? null,
+            ]
+        );
     }
 }
