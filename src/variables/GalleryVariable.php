@@ -29,16 +29,16 @@ class GalleryVariable
     /**
      * Returns assets for a given folder ID, optionally filtered by kind(s).
      */
-    public function getAssets(int|string $folderId, string|array|null $assetTypes = null): array
+    public function getAssets(int|string $folderId, object|array|null $filters = null): array
     {
-        return Gallery::getInstance()->galleryService->getAssets($folderId, $assetTypes);
+        return Gallery::getInstance()->galleryService->getAssets($folderId, $filters);
     }
 
     /**
      * Returns all objects (folders + assets) in a folder.
      */
-    public function getObjects(int|string $folderId, string|array|null $assetTypes = null): array
+    public function getObjects(int|string $folderId, object|array|null $filters = null): array
     {
-        return Gallery::getInstance()->galleryService->getObjects($folderId, $assetTypes);
+        return Gallery::getInstance()->galleryService->getObjects($folderId, $filters);
     }
 }

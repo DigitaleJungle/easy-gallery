@@ -43,31 +43,47 @@ class GalleryService extends Component
     /**
      * Return all assets in a folder, optionally filtered by kind(s).
      */
-    public function getAssets(int|string $folderId, string|array|null $assetTypes = null): array
+    public function getAssets(int|string $folderId, object|array|null $filters = null): array
     {
+        // If Twig passes {"kind": ["image", "pdf"]}, that’s an array, so cast it to an object.
+        if (is_array($filters)) {
+            $filters = (object)$filters;
+        }
+    
+        // Start building the Asset query.
         $query = Asset::find()->folderId($folderId);
-        $assets = $query->all();
-
-        if (!$assetTypes) {
-            return $assets;
+    
+        // If a filters object was given, apply each filter method directly to the query.
+        if ($filters) {
+            foreach (get_object_vars($filters) as $property => $value) {
+                // Check if $query has a method named after this property.
+                // For example, 'height' => we call $query->height($value).
+                if (method_exists($query, $property)) {
+                    $query->$property($value);
+                } else {
+                    // Optionally, log or handle unknown filter keys.
+                    // e.g. Craft::warning("Unknown filter $property", __METHOD__);
+                }
+            }
         }
-
-        if (is_string($assetTypes)) {
-            $assetTypes = [$assetTypes];
-        }
-
-        return array_filter($assets, fn($asset) => in_array($asset->kind, $assetTypes, true));
+    
+        // Finally, fetch the results after query modifications.
+        return $query->all();
     }
 
     /**
      * Return everything in a folder (subfolders + assets).
      * Subfolders returned as GalleryData objects, assets as elements.
      */
-    public function getObjects(int|string $folderId, string|array|null $assetTypes = null): array
+    public function getObjects(int|string $folderId, object|array|null $filters = null): array
     {
+        if (is_array($filters)) {
+            $filters = (object)$filters;
+        }
+    
         $folders = $this->getFolders($folderId);
-        $assets = $this->getAssets($folderId, $assetTypes);
-
+        $assets = $this->getAssets($folderId, $filters);
+    
         // Merge the arrays (subfolders first, then assets).
         return array_merge($folders, $assets);
     }
