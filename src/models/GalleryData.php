@@ -6,6 +6,7 @@ use Craft;
 use craft\models\VolumeFolder;
 use digitalejungle\crafteasygallery\Gallery;
 use digitalejungle\crafteasygallery\models\settings;
+use Twig\Markup;
 
 /**
  * A simple container for a single folder.
@@ -82,15 +83,17 @@ class GalleryData
     /**
      * Renders the folder and makes it available as 'entry' in the custom template
      */
-    public function render(array $variables = []): string
+    public function render(array $variables = []): Markup
     {
         $settings = Gallery::getInstance()->getSettings();
         $template = $settings->folderTemplate ?: null;
         $variables['entry'] = $this;
         if ($template) {
-            return Craft::$app->view->renderTemplate($template, $variables);
+            $output = Craft::$app->view->renderTemplate($template, $variables);
+        } else {
+            $output = '<p>' . $this->getTitle() . '</p>';
         }
 
-        return $this->getTitle();
+        return new Markup($output, Craft::$app->view->getTwig()->getCharset());
     }
 }
