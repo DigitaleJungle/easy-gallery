@@ -26,6 +26,11 @@ class GalleryVariable
         return Gallery::getInstance()->galleryService->getFolders($folderId);
     }
 
+    public function getAllFolders(int|string $folderId): array
+    {
+        return Gallery::getInstance()->galleryService->getAllFolders($folderId);
+    }
+
     /**
      * Returns assets for a given folder ID, optionally filtered by kind(s).
      */
@@ -34,6 +39,12 @@ class GalleryVariable
         return Gallery::getInstance()->galleryService->getAssets($folderId, $filters);
     }
 
+    public function getAllAssets(int|string $folderId, object|array|null $filters = null): array
+    {
+        return Gallery::getInstance()->galleryService->getAllAssets($folderId, $filters);
+    }
+
+
     /**
      * Returns all objects (folders + assets) in a folder.
      */
@@ -41,4 +52,19 @@ class GalleryVariable
     {
         return Gallery::getInstance()->galleryService->getObjects($folderId, $filters);
     }
+
+    public function getAllObjects(int|string $folderId, object|array|null $filters = null): array
+    {
+        return Gallery::getInstance()->galleryService->getAllObjects($folderId, $filters);
+    }
+
+    /**
+     * Creates the path from folder 1 to 2
+     */
+    
+    public function getPath(int|string $startId, int|string $endId): array
+    {
+        return Gallery::getInstance()->galleryService->getPath($startId, $endId);
+    }
+
 }

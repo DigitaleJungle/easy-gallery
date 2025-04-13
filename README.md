@@ -67,10 +67,18 @@ Easy Gallery provides 2 main functionalities.
 2. It adds a new service you can call using {{ craft.easyGallery }}
    **{{ craft.easyGallery.getObjects( *Folder Id, {filter}* ) }}**
    Query All objects from the specified folder, including folders
+   **{{ craft.easyGallery.getAllObjects( *Folder Id, {filter}* ) }}**
+   Query All objects - including nested - from the specified folder, including folders
    **{{ craft.easyGallery.getFolders( *Folder Id* ) }}**
    Query all folders from a specified folder
+   **{{ craft.easyGallery.getAllFolders( *Folder Id* ) }}**
+   Query all folders - including nested - from a specified folder
    **{{ craft.easyGallery.getAssets( *Folder Id, {filter}* ) }}**
    Query all assets from a specified folder, allows optional filtering on the kind of object.
+   **{{ craft.easyGallery.getAllAssets( *Folder Id, {filter}* ) }}**
+   Query all assets - including nested - from a specified folder, allows optional filtering on the kind of object.
+   **{{ craft.easyGallery.getPath( *Folder Id 1, Folder Id 2* ) }}**
+   Query all folders to get from folder id 2 to folder id 1, usefull to create breadcrumbs.
 
 *{filter}* accepts all posssible assets filters. For example
 
