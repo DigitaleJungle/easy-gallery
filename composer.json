@@ -1,14 +1,15 @@
 {
   "name": "digitale-jungle/craft-easy-gallery",
+  "version": "1.1.0",
   "description": "This plugin provides a new field type and extra functionality to easily create galleries. Create beautiful galleries olders",
   "type": "craft-plugin",
   "license": "proprietary",
   "support": {
     "email": "info@digitalejungle.be",
-    "issues": "https://github.com///issues?state=open",
-    "source": "https://github.com//",
-    "docs": "https://github.com//",
-    "rss": "https://github.com///releases.atom"
+    "issues": "https://github.com/DigitaleJungle/easy-gallery/issues",
+    "source": "https://github.com/DigitaleJungle/easy-gallery/",
+    "docs": "https://github.com/DigitaleJungle/easy-gallery/",
+    "rss": "https://github.com/DigitaleJungle/easy-gallery/releases.atom"
   },
   "require": {
     "php": ">=8.2",
@@ -27,7 +28,7 @@
     "handle": "easy-gallery",
     "name": "Easy Gallery",
     "developer": "Digitale Jungle",
-    "documentationUrl": "https://github.com//",
+    "documentationUrl": "https://github.com/DigitaleJungle/easy-gallery#readme",
     "class": "digitalejungle\\crafteasygallery\\Gallery"
   },
   "scripts": {
