@@ -7,10 +7,14 @@ use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
 use craft\services\Fields;
+use craft\controllers\AssetsController;
+use craft\events\ActionEvent;
+use craft\web\Controller;
 use craft\web\twig\variables\CraftVariable;
 use digitalejungle\crafteasygallery\fields\GalleryField;
 use digitalejungle\crafteasygallery\models\Settings;
 use digitalejungle\crafteasygallery\services\GalleryService;
+use digitalejungle\crafteasygallery\services\DisplayNameService;
 use digitalejungle\crafteasygallery\variables\GalleryVariable;
 use yii\base\Event;
 
@@ -22,8 +26,10 @@ use yii\base\Event;
  */
 class Gallery extends Plugin
 {
-    public string $schemaVersion = '1.0.0';
+    public string $schemaVersion = '1.2.1';
     public bool $hasCpSettings = true;
+    private static ?string $folderName = null;
+    private static ?string $existingFolderId = null;
 
     /**
      * Register components/services for this plugin.
@@ -34,6 +40,9 @@ class Gallery extends Plugin
             'components' => [
                 'galleryService' => [
                     'class' => GalleryService::class,
+                ],
+                'displayNameService' => [
+                    'class' => DisplayNameService::class,
                 ],
             ],
         ];
@@ -55,8 +64,6 @@ class Gallery extends Plugin
     public function init(): void
     {
         parent::init();
-
-        \Craft::info('init() - Easy Gallery is initializing', __METHOD__);
 
         $this->attachEventHandlers();
 
@@ -81,6 +88,42 @@ class Gallery extends Plugin
                 $variable->set('easyGallery', GalleryVariable::class);
             }
         );
+
+        Event::on(
+            AssetsController::class,
+            Controller::EVENT_BEFORE_ACTION,
+            function ($event) {
+                if ($event->action->id === 'create-folder') {
+                    $request = Craft::$app->getRequest();
+                    self::$folderName = $request->getBodyParam('folderName');
+                } else if ($event->action->id === 'rename-folder') {
+                    $request = Craft::$app->getRequest();
+                    self::$folderName = $request->getBodyParam('newName');
+                    self::$existingFolderId = $request->getBodyParam('folderId');
+                }
+            }
+        );
+
+        Event::on(
+            assetsController::class,
+            Controller::EVENT_AFTER_ACTION,
+            function ($event) {
+                $actionId = $event->action->id;
+                if (in_array($actionId, ['create-folder','rename-folder'], true) && self::$folderName !== null) {
+                    $responseData = $event->result;
+                    if (self::$existingFolderId !== null) {
+                        $folderId = self::$existingFolderId;
+                    } else {
+                        $folderId = $responseData->data['folderId'] ?? null;
+                    }
+                    self::getInstance()->displayNameService->updateFolder($folderId, self::$folderName);
+                    self::$folderName = null;
+                    self::$existingFolderId = null;
+                }
+            }
+        );
+        
+        
     }
 
     private function attachEventHandlers(): void
