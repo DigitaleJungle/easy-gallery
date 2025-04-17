@@ -100,6 +100,11 @@ class Gallery extends Plugin
                     $request = Craft::$app->getRequest();
                     self::$folderName = $request->getBodyParam('newName');
                     self::$existingFolderId = $request->getBodyParam('folderId');
+                } else if ($event->action->id === 'delete-folder') {
+                    $request = Craft::$app->getRequest();
+                    self::$existingFolderId = $request->getBodyParam('folderId');
+                    self::getInstance()->displayNameService->deleteFolder(self::$existingFolderId);
+                    self::$existingFolderId = null;
                 }
             }
         );

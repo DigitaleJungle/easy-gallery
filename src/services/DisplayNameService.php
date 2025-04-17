@@ -25,4 +25,34 @@ class DisplayNameService extends Component
             ->execute();
         }
     }
+
+    public function deleteFolder(string $id): void
+    {
+        $ids = $this->getAllFolderIds($id);
+
+
+        $ids[] = (int)$id;
+        Craft::$app->db->createCommand()
+            ->delete(
+                '{{%easygallery_folderdisplayname}}',
+                ['folderId' => $ids] 
+            )
+            ->execute();
+    }
+
+    private function getAllFolderIds(int $parentId): array
+    {
+        $children = Craft::$app->assets->findFolders([
+            'parentId' => $parentId,
+        ]);
+
+        $ids = [];
+
+        foreach ($children as $child) {
+            $ids[] = $child->id;
+            $ids   = array_merge($ids, $this->getAllFolderIds($child->id));
+        }
+
+        return $ids;
+    }
 }
