@@ -3,9 +3,12 @@
 namespace digitalejungle\crafteasygallery\migrations;
 
 use Craft;
-use craft\db\Migration;
 use craft\records\VolumeFolder;
+use craft\db\Migration;
 
+/**
+ * m250416_120500_displayNameMigration migration.
+ */
 class m250416_120500_displayNameMigration extends Migration
 {
     public function safeUp(): void

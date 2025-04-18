@@ -1,7 +1,7 @@
 {
   "name": "digitale-jungle/craft-easy-gallery",
-  "version": "1.1.0",
   "description": "This plugin provides a new field type and extra functionality to easily create galleries. Create beautiful galleries olders",
+  "version": "v1.2.2",
   "type": "craft-plugin",
   "license": "proprietary",
   "support": {
