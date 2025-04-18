@@ -136,7 +136,7 @@ class Gallery extends Plugin
         // Example: register your plugin’s own event handlers here if needed.
     }
 
-        /**
+    /**
      * Creates and returns the model used to store the plugin’s settings.
      **/
     protected function createSettingsModel(): Model

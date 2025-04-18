@@ -1,6 +1,15 @@
 # Release Notes for Easy Gallery
 
-## 1.0.2
+## 1.2.2
+- folder.title is now fetching the displayname
+- folder.filename added
+- folder.slug added
+
+## 1.2.1
+- Added table to store DisplayName
+- Added event listeners to create, update and delete rows in this table
+
+## 1.1.0
 - Added the getAllAssets service
 - Added the getAllFolders service
 - Added the getAllObjects service

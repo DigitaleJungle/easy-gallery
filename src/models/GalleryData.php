@@ -29,15 +29,21 @@ class GalleryData
     }
 
     /**
-     * Return the folder’s name or a cleaned-up variant.
+     * Return the folder’s name.
      */
-    public function getTitle(bool $clean = false): string
+    public function getfileName(): string
     {
-        if ($clean) {
-            // Example: replace hyphens with spaces
-            return str_replace('-', ' ', $this->currentFolder->name);
-        }
         return $this->currentFolder->name;
+    }
+    public function getSlug(): string
+    {
+        return mb_strtolower($this->currentFolder->name, 'UTF-8');
+    }
+    public function getTitle(): string
+    {
+        return Gallery::getInstance()
+        ->displayNameService
+        ->getDisplayName($this->currentFolder->id);
     }
 
     /**

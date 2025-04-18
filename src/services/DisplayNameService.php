@@ -55,4 +55,19 @@ class DisplayNameService extends Component
 
         return $ids;
     }
+
+    public function getDisplayName(int $folderId): ?string
+    {
+        $stored = (new \craft\db\Query())
+            ->select(['displayName'])
+            ->from('{{%easygallery_folderdisplayname}}')
+            ->where(['folderId' => $folderId])
+            ->scalar() ?: null;
+
+        if ($stored === null) {
+            return Craft::$app->assets->getFolderById($folderId)->name;
+        }
+
+    return $stored; 
+    }
 }
