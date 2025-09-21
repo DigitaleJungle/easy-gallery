@@ -7,6 +7,7 @@ use craft\base\Component;
 use craft\elements\Asset;
 use craft\models\VolumeFolder;
 use digitalejungle\crafteasygallery\models\GalleryData;
+use \craft\elements\db\AssetQuery;
 
 class GalleryService extends Component
 {
@@ -60,7 +61,7 @@ class GalleryService extends Component
     /**
      * Return all assets in a folder, optionally filtered by kind(s).
      */
-    public function getAssets(int|string $folderId, object|array|null $filters = null): array
+    public function getAssets(int|string $folderId, object|array|null $filters = null): AssetQuery
     {
         // If Twig passes {"kind": ["image", "pdf"]}, that’s an array, so cast it to an object.
         if (is_array($filters)) {
@@ -85,10 +86,10 @@ class GalleryService extends Component
         }
     
         // Finally, fetch the results after query modifications.
-        return $query->all();
+        return $query;
     }
 
-    public function getAllAssets(int|string $folderId, object|array|null $filters = null): array
+    public function getAllAssets(int|string $folderId, object|array|null $filters = null): AssetQuery
     {
         // If Twig passes {"kind": ["image", "pdf"]}, that’s an array, so cast it to an object.
         if (is_array($filters)) {

@@ -1,5 +1,9 @@
 # Release Notes for Easy Gallery
 
+## 1.2.4
+- New method getAssetQuery returning an assetQuery
+- New method getAllAssetQuery returning an assetQuery
+
 ## 1.2.2
 - folder.title is now fetching the displayname
 - folder.filename added

@@ -4,6 +4,7 @@ namespace digitalejungle\crafteasygallery\variables;
 
 use digitalejungle\crafteasygallery\Gallery;
 use digitalejungle\crafteasygallery\models\GalleryData;
+use \craft\elements\db\AssetQuery;
 
 /**
  * Access these methods via craft.easyGallery.* in Twig.
@@ -36,10 +37,20 @@ class GalleryVariable
      */
     public function getAssets(int|string $folderId, object|array|null $filters = null): array
     {
+        return Gallery::getInstance()->galleryService->getAssets($folderId, $filters)->all();
+    }
+
+    public function getAssetQuery(int|string $folderId, object|array|null $filters = null): AssetQuery
+    {
         return Gallery::getInstance()->galleryService->getAssets($folderId, $filters);
     }
 
     public function getAllAssets(int|string $folderId, object|array|null $filters = null): array
+    {
+        return Gallery::getInstance()->galleryService->getAllAssets($folderId, $filters)->all();
+    }
+
+    public function getAllAssetQuery(int|string $folderId, object|array|null $filters = null): AssetQuery
     {
         return Gallery::getInstance()->galleryService->getAllAssets($folderId, $filters);
     }
